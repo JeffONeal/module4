@@ -183,26 +183,26 @@ port_returns = user_port.dot(weights)
 # Display sample data
 port_returns
 
-# Join your returns DataFrame to the original returns DataFrame
-final_port = pd.concat([port_returns, combined_port], axis='columns', join='inner')
-final_port
+#combining my port returns to the other data
+combined_port["my_port"] = port_returns
+combined_port
 
-# Only compare dates where return data exists for all the stocks (drop NaNs)
-final_port.isna().sum().sum()
+#cleaning any NA's
+combined_port.dropna(inplace=True)
 
 # Calculate the annualized `std`
-final_port.std()
+combined_port.std()
 
-# Calculate rolling standard deviation & plot data
-final_port.rolling(window=21).std().plot(figsize=(20,10))
+# Calculate rolling standard deviation & plot
+combined_port.rolling(window=21).std().plot(figsize=(20,10))
 
 # Calculate and plot the correlation
-correlation = final_port.corr()
+correlation = combined_port.corr()
 correlation.plot(figsize=(20, 10))
 
 
 # Calculate and plot Beta
-# Calculate covariance of your portfolio
+# Calculate covariance of my portfolio
 my_covariance = combined_port['my_port'].cov(combined_port['S&P500'])
 my_covariance
 # Calculate variance of S&P 500
@@ -216,11 +216,7 @@ rolling_my_cov = combined_port['my_port'].rolling(window=30).cov(combined_port['
 rolling_variance = combined_port['S&P500'].rolling(window=30).var()
                                                                    
 rolling_my_beta = rolling_my_cov / rolling_variance
-rolling_my_beta.plot(figsize=(20,10))      
-    
-
-
-
+rolling_my_beta.plot(figsize=(20,10)) 
 
 # Calculate Annualized Sharpe Ratios
 daily_std1 = final_port.std()
@@ -232,6 +228,5 @@ final_sharpe
 
 # Visualize the sharpe ratios as a bar plot
 final_sharpe.plot.bar(figsize=(20,10))
-
 
 #My portfolio outperformed the market and most of the other portfolios.

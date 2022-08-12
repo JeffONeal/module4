@@ -64,15 +64,15 @@ combined_port = pd.concat([wr_data, algo_data, sp500_data], axis='columns', join
 combined_port
 
 # Plot daily returns of all portfolios
-combined_port.plot(figsize=(20,10))
+combined_port.plot(figsize=(20,10),title=("Daily Returns of Portfolios"))
 
 # Calculate cumulative returns of all portfolios
 cumulative_returns = (1 + combined_port).cumprod()
 # Plot cumulative returns
-cumulative_returns.plot(figsize=(20,10))
+cumulative_returns.plot(figsize=(20,10),title=("Cumulative Returns of Portfolios"))
 
 # Box plot to visually show risk
-combined_port.plot.box(figsize=(20,10))
+combined_port.plot.box(figsize=(20,10),title=("STD of Financial Portfolios"))
 
 # Calculate the daily standard deviations of all portfolios
 daily_std = combined_port.std()
@@ -89,7 +89,8 @@ annualized_std = daily_std*np.sqrt(252)
 annualized_std
 
 # Calculate the rolling standard deviation for all portfolios using a 21-day window & plotting the data
-combined_port.rolling(window=21).std().plot(figsize=(20,10))
+combined_port.rolling(window=21).std().plot(figsize=(20,10),title=("Rolling 21 Day STD"))
+
 
 # Calculate the correlation
 correlation = combined_port.corr()
@@ -110,12 +111,12 @@ rolling_algo1_cov = combined_port['Algo 1'].rolling(window=30).cov(combined_port
 rolling_variance = combined_port['S&P500'].rolling(window=30).var()
                                                                    
 rolling_algo1_beta = rolling_algo1_cov / rolling_variance
-rolling_algo1_beta.plot(figsize=(20,10))       
+rolling_algo1_beta.plot(figsize=(20,10),title=("Rolling Beta of Algo1 against S&P500"))       
 
 
 # Use `ewm` to calculate the rolling window
 combined_port_ewm = combined_port.ewm(halflife=21).std()
-combined_port_ewm.plot(figsize=(20,10))
+combined_port_ewm.plot(figsize=(20,10),title=("Weigthed Moving Average of Portfolios")))
 
 
 # Annualized Sharpe Ratios
@@ -124,7 +125,7 @@ sharpe_ratios = (combined_port.mean() * 252) / (annualized_std * np.sqrt(252))
 sharpe_ratios
 
 # Visualize the sharpe ratios as a bar plot
-sharpe_ratios.plot.bar(figsize=(20,10))
+sharpe_ratios.plot.bar(figsize=(20,10),title=("Sharpe Ratio's of Portfolios"))
 
 #According to the bar plot above both algo strategies are beating the market. 
 
@@ -194,11 +195,11 @@ combined_port.dropna(inplace=True)
 combined_port.std()
 
 # Calculate rolling standard deviation & plot
-combined_port.rolling(window=21).std().plot(figsize=(20,10))
+combined_port.rolling(window=21).std().plot(figsize=(20,10),title=("Rolling 21 Day STD"))
 
 # Calculate and plot the correlation
 correlation = combined_port.corr()
-correlation.plot(figsize=(20, 10))
+correlation.plot(figsize=(20, 10),title=("Portfolio Correlation"))
 
 
 # Calculate and plot Beta
@@ -216,7 +217,7 @@ rolling_my_cov = combined_port['my_port'].rolling(window=30).cov(combined_port['
 rolling_variance = combined_port['S&P500'].rolling(window=30).var()
                                                                    
 rolling_my_beta = rolling_my_cov / rolling_variance
-rolling_my_beta.plot(figsize=(20,10)) 
+rolling_my_beta.plot(figsize=(20,10),title=("My Portfolio Beta")) 
 
 # Calculate Annualized Sharpe Ratios
 daily_std1 = final_port.std()
@@ -227,6 +228,6 @@ final_sharpe = (final_port.mean() * 252) / (annualized_std1 * np.sqrt(252))
 final_sharpe
 
 # Visualize the sharpe ratios as a bar plot
-final_sharpe.plot.bar(figsize=(20,10))
+final_sharpe.plot.bar(figsize=(20,10),title=("Sharpe Ratios of Portfolios"))
 
 #My portfolio outperformed the market and most of the other portfolios.
